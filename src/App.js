@@ -1,10 +1,14 @@
 import Navbar from "./components/Navbar";
-import Create from "./components/Create";
+// import CreateForm from "./components/CreateForm";
+// import EditForm from "./components/EditForm";
+
+import FormIndex from "./components/FormIndex";
+
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <Create />
+      <FormIndex />
     </div>
   );
 }

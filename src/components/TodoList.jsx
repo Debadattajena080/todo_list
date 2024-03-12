@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { FaInfo } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -11,37 +10,18 @@ const truncateText = (text, maxLength) => {
   return truncatedText.charAt(0).toUpperCase() + truncatedText.slice(1);
 };
 
-const TodoList = ({ todos, setTodos, setShowEditForm }) => {
-  const [showInfoModal, setShowInfoModal] = useState(false);
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
-    useState(false);
-  const [selectedTodo, setSelectedTodo] = useState(null);
-  // const [showEditForm, setShowEditForm] = useState(false);
-
-  const openInfoModal = (todo) => {
-    setSelectedTodo(todo);
-    setShowInfoModal(true);
-  };
-
-  const closeInfoModal = () => {
-    setShowInfoModal(false);
-  };
-
-  const openDeleteConfirmationModal = (todo) => {
-    setSelectedTodo(todo);
-    setShowDeleteConfirmationModal(true);
-  };
-
-  const closeDeleteConfirmationModal = () => {
-    setShowDeleteConfirmationModal(false);
-  };
-
-  const handleDelete = () => {
-    const updatedTodos = todos.filter((todo) => todo !== selectedTodo);
-    setTodos(updatedTodos);
-    closeDeleteConfirmationModal();
-  };
-
+const TodoList = ({
+  todos,
+  openInfoModal,
+  closeInfoModal,
+  openEditForm,
+  openDeleteConfirmationModal,
+  closeDeleteConfirmationModal,
+  showDeleteConfirmationModal,
+  handleDelete,
+  showInfoModal,
+  selectedTodo,
+}) => {
   return (
     <div className="m-4 sm:h-[40vh] sm:w-[70vw] w-full h-auto sm:border-2 sm:border-primaryBorder p-4 sm:rounded-md sm:bg-secondaryBg">
       {showInfoModal && selectedTodo && (
@@ -86,7 +66,10 @@ const TodoList = ({ todos, setTodos, setShowEditForm }) => {
                   >
                     <FaInfo className=" text-xl p-1" />
                   </button>
-                  <button className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder">
+                  <button
+                    className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder"
+                    onClick={() => openEditForm(todo)}
+                  >
                     <FaPen className=" text-xl p-1" />
                   </button>
                   <button

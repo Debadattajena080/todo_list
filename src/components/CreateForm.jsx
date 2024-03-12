@@ -1,18 +1,6 @@
-import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import TodoList from "./TodoList";
 
-const Create = ({ setShowEditForm }) => {
-  const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState({ title: "", desc: "" });
-
-  const addTodo = () => {
-    if (newTodo.title.trim() !== "" && newTodo.desc.trim() !== "") {
-      setTodos([...todos, newTodo]);
-      setNewTodo({ title: "", desc: "" });
-    }
-  };
-
+const CreateForm = ({ newTodo, setNewTodo, addTodo }) => {
   return (
     <>
       <div className="flex items-center justify-center mx-4">
@@ -48,15 +36,8 @@ const Create = ({ setShowEditForm }) => {
           <FaPlus className="text-primaryBorder text-4xl" />
         </button>
       </div>
-      <div className="mx-auto flex justify-center mt-8">
-        <TodoList
-          todos={todos}
-          setTodos={setTodos}
-          setShowEditForm={setShowEditForm}
-        />
-      </div>
     </>
   );
 };
 
-export default Create;
+export default CreateForm;
