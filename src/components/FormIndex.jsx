@@ -7,32 +7,37 @@ const FormIndex = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState({ title: "", desc: "" });
   const [showEdit, setShowEdit] = useState(false);
-  console.log("showedit", showEdit);
+  const [notification, setNotification] = useState("");
+  const [showButton, setShowButton] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
+  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
 
   const addTodo = () => {
     if (newTodo.title.trim() !== "" && newTodo.desc.trim() !== "") {
       setTodos([...todos, newTodo]);
       setNewTodo({ title: "", desc: "" });
+      setNotification("Task added successfully");
+      setTimeout(() => {
+        setNotification("");
+      }, 3000);
     }
   };
 
-  const [showInfoModal, setShowInfoModal] = useState(false);
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
-    useState(false);
-  const [selectedTodo, setSelectedTodo] = useState(null);
-
   const openInfoModal = (todo) => {
     setSelectedTodo(todo);
-    setShowInfoModal(true);
+    setShowButton(true);
   };
 
   const closeInfoModal = () => {
-    setShowInfoModal(false);
+    setShowButton(false);
   };
 
   const openEditForm = (todo) => {
     setSelectedTodo(todo);
     setShowEdit(true);
+    setIsEditFormOpen(true);
   };
 
   const updateTodo = (updatedTodo) => {
@@ -42,6 +47,7 @@ const FormIndex = () => {
     setTodos(updatedTodos);
     setSelectedTodo(null);
     setShowEdit(false);
+    setIsEditFormOpen(false);
   };
   const openDeleteConfirmationModal = (todo) => {
     setSelectedTodo(todo);
@@ -56,10 +62,22 @@ const FormIndex = () => {
     const updatedTodos = todos.filter((todo) => todo !== selectedTodo);
     setTodos(updatedTodos);
     closeDeleteConfirmationModal();
+    setNotification("Task deleted successfully");
+    setTimeout(() => {
+      setNotification("");
+    }, 3000);
   };
 
   return (
     <>
+      {notification && (
+        <div
+          class="bg-teal-100 border border-red-400 text-teal-900 px-4 py-3 rounded absolute top-5 w-3/4 mx-2 sm:w-1/2 sm:ml-96 ml-12"
+          role="alert"
+        >
+          <span class="block sm:inline">{notification}</span>
+        </div>
+      )}
       {!showEdit ? (
         <CreateForm
           todos={todos}
@@ -81,8 +99,9 @@ const FormIndex = () => {
           closeDeleteConfirmationModal={closeDeleteConfirmationModal}
           showDeleteConfirmationModal={showDeleteConfirmationModal}
           handleDelete={handleDelete}
-          showInfoModal={showInfoModal}
+          showButton={showButton}
           selectedTodo={selectedTodo}
+          isEditFormOpen={isEditFormOpen}
         />
       </div>
     </>

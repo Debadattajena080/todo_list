@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from "react";
 import { FaInfo } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import ViewModal from "./ViewModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const truncateText = (text, maxLength) => {
@@ -13,24 +13,30 @@ const truncateText = (text, maxLength) => {
 const TodoList = ({
   todos,
   openInfoModal,
-  closeInfoModal,
   openEditForm,
   openDeleteConfirmationModal,
   closeDeleteConfirmationModal,
   showDeleteConfirmationModal,
   handleDelete,
-  showInfoModal,
   selectedTodo,
+  isEditFormOpen,
 }) => {
+  const [showButtons, setShowButtons] = useState([]);
+
+  // Initialize showButtons array
+  useEffect(() => {
+    setShowButtons(new Array(todos.length).fill(false));
+  }, [todos]);
+
+  // Function to toggle showButtons for a specific index
+  const toggleShowButtons = (index) => {
+    const updatedShowButtons = [...showButtons];
+    updatedShowButtons[index] = !updatedShowButtons[index];
+    setShowButtons(updatedShowButtons);
+  };
+
   return (
-    <div className="m-4 sm:h-[40vh] sm:w-[70vw] w-full h-auto sm:border-2 sm:border-primaryBorder p-4 sm:rounded-md sm:bg-secondaryBg">
-      {showInfoModal && selectedTodo && (
-        <ViewModal
-          title={selectedTodo.title}
-          desc={selectedTodo.desc}
-          closeModal={closeInfoModal}
-        />
-      )}
+    <div className="m-4 sm:h-[40vh] sm:w-[70vw] w-full h-auto sm:border-2 sm:border-primaryBorder sm:p-4 sm:rounded-md sm:bg-secondaryBg">
       {showDeleteConfirmationModal && selectedTodo && (
         <DeleteConfirmationModal
           todo={selectedTodo}
@@ -50,7 +56,7 @@ const TodoList = ({
           {todos.map((todo, index) => (
             <div
               key={index}
-              className="bg-primaryBg border-2 rounded border-primaryBorder m-2 w-80 "
+              className="border-2 rounded border-primaryBorder m-2 w-full sm:w-80"
             >
               <div className="flex justify-between">
                 <div className="p-2">
@@ -60,24 +66,35 @@ const TodoList = ({
                   </p>
                 </div>
                 <div className="flex justify-between items-center space-x-2 mr-2">
-                  <button
-                    className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder"
-                    onClick={() => openInfoModal(todo)}
-                  >
-                    <FaInfo className=" text-xl p-1" />
-                  </button>
-                  <button
-                    className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder"
-                    onClick={() => openEditForm(todo)}
-                  >
-                    <FaPen className=" text-xl p-1" />
-                  </button>
-                  <button
-                    className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder"
-                    onClick={() => openDeleteConfirmationModal(todo)}
-                  >
-                    <RxCross2 className=" text-xl p-1" />
-                  </button>
+                  {showButtons[index] ? (
+                    <>
+                      <button
+                        className={`border-2 border-primaryBorder rounded-md bg-primaryBg hover:bg-primaryBorder ${
+                          isEditFormOpen ? "opacity-50 disabled" : ""
+                        }`}
+                        onClick={() => openEditForm(todo)}
+                        disabled={isEditFormOpen}
+                      >
+                        <FaPen className=" text-xl p-1" />
+                      </button>
+                      <button
+                        className={`border-2 border-primaryBorder rounded-md bg-primaryBg hover:bg-primaryBorder ${
+                          isEditFormOpen ? "opacity-50 disabled" : ""
+                        }`}
+                        onClick={() => openDeleteConfirmationModal(todo)}
+                        disabled={isEditFormOpen}
+                      >
+                        <RxCross2 className=" text-xl p-1" />
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      className="border-2 border-primaryBorder rounded-md hover:bg-primaryBorder"
+                      onClick={() => toggleShowButtons(index)}
+                    >
+                      <FaInfo className=" text-xl p-1" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
