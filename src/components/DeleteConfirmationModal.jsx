@@ -11,11 +11,11 @@ const DeleteConfirmationModal = ({
       role="dialog"
       aria-modal="true"
     >
-      <div className="fixed inset-0 bg-primaryBg bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 bg-secondaryBg bg-opacity-75 transition-opacity "></div>
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex  items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative top-72 transform overflow-hidden rounded-lg bg-primaryBg border border-primaryBorder text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div className="relative top-72 transform overflow-hidden bg-primaryBg border-primaryBorder border-t-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-primaryBg  px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-center">
                 <h3
